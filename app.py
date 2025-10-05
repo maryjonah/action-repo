@@ -45,7 +45,7 @@ def webhook():
 
 @app.route("/events", methods=["GET"])
 def get_events():
-    events = list(collection.find().sort("tmestamp", -1).limit(10))
+    events = list(collection.find().sort("timestamp", -1).limit(10))
     for event in events:
         event["_id"] = str(event["_id"])
     return jsonify(events), 200
