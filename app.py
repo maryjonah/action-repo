@@ -40,7 +40,7 @@ def webhook():
         return jsonify({"message": "Event not supported"}), 400
 
     collection.insert_one(event_data)
-    return jsonify({"message": "Event received and processed"}), 200
+    return jsonify({"message": "Event received"}), 200
 
 
 @app.route("/events", methods=["GET"])
