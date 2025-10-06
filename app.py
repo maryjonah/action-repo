@@ -9,6 +9,7 @@ import os
 load_dotenv()
 app = Flask(__name__)
 
+# Get mongo_uri from env file
 uri = os.getenv('MONGO_URI')
 
 client = MongoClient(uri, server_api=ServerApi('1'))
