@@ -4,9 +4,9 @@ from datetime import datetime
 
 app = Flask(__name__)
 
-client = MongoClient('mongodb://localhost:27017/')
-db = client['github_webhooks']
-collection = db['events']
+# client = MongoClient('mongodb://localhost:27017/')
+# db = client['github_webhooks']
+# collection = db['events']
 
 
 @app.route('/webhook', methods=['POST'])
@@ -39,16 +39,16 @@ def webhook():
     else:
         return jsonify({"message": "Event not supported"}), 400
 
-    collection.insert_one(event_data)
-    return jsonify({"message": "Event received and processed"}), 200
+    # collection.insert_one(event_data)
+    return jsonify(event_data), 200
 
 
-@app.route("/events", methods=["GET"])
-def get_events():
-    events = list(collection.find().sort("timestamp", -1).limit(10))
-    for event in events:
-        event["_id"] = str(event["_id"])
-    return jsonify(events), 200
+# @app.route("/events", methods=["GET"])
+# def get_events():
+#     events = list(collection.find().sort("timestamp", -1).limit(10))
+#     for event in events:
+#         event["_id"] = str(event["_id"])
+#     return jsonify(events), 200
 
 
 if __name__ == "__main__":
