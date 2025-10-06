@@ -5,6 +5,7 @@ from datetime import datetime
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 import os
+import traceback
 
 load_dotenv()
 app = Flask(__name__)
@@ -63,7 +64,6 @@ def webhook():
 #     for event in events:
 #         event["_id"] = str(event["_id"])
 #     return jsonify(events), 200
-
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
