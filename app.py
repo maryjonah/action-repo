@@ -19,17 +19,27 @@ collection = db['events']
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
-    data = request.json
+    try:
+        data = request.json
 
-    author = data["pusher"]["name"]
-    to_branch = data["ref"].split("/")[-1]
-    timestamp = datetime.strptime(data["head_commit"]["timestamp"], "%Y-%m-%dT%H:%M:%SZ")
-    event_data = {
-        "type": "push",
-        "author": author,
-        "to_branch": to_branch,
-        "timestamp": timestamp
-    }
+        author = data["pusher"]["name"]
+        to_branch = data["ref"].split("/")[-1]
+        timestamp = datetime.strptime(data["head_commit"]["timestamp"], "%Y-%m-%dT%H:%M:%SZ")
+        event_data = {
+            "type": "push",
+            "author": author,
+            "to_branch": to_branch,
+            "timestamp": timestamp
+        }
+
+        collection.insert_one(event_data)
+        return jsonify(event_data), 200
+    except Exception as e:
+        full_trace = traceback.format_exc()
+        print("--- BEGIN TRACEBACK ---")
+        print(full_trace)
+        print("--- END TRACEBACK ---")
+
     # elif event_type == "pull_request":
     #     author = data["pull_request"]["user"]["login"]
     #     from_branch = data["pull_request"]["head"]["ref"]
@@ -45,8 +55,6 @@ def webhook():
     # else:
     #     return jsonify({"message": "Event not supported"}), 400
 
-    collection.insert_one(event_data)
-    return jsonify(event_data), 200
 
 
 # @app.route("/events", methods=["GET"])
