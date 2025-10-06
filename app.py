@@ -20,9 +20,7 @@ collection = db['events']
 @app.route('/webhook', methods=['POST'])
 def webhook():
     data = request.json
-    # event_type = request.headers.get('X-Github-Event')
 
-    # if event_type == "push":
     author = data["pusher"]["name"]
     to_branch = data["ref"].split("/")[-1]
     timestamp = datetime.strptime(data["head_commit"]["timestamp"], "%Y-%m-%dT%H:%M:%SZ")
