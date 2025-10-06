@@ -12,32 +12,32 @@ app = Flask(__name__)
 @app.route('/webhook', methods=['POST'])
 def webhook():
     data = request.json
-    event_type = request.headers.get('X-Github-Event')
+    # event_type = request.headers.get('X-Github-Event')
 
-    if event_type == "push":
-        author = data["pusher"]["name"]
-        to_branch = data["ref"].split("/")[-1]
-        timestamp = datetime.strptime(data["head_commit"]["timestamp"], "%Y-%m-%dT%H:%M:%SZ")
-        event_data = {
-            "type": "push",
-            "author": author,
-            "to_branch": to_branch,
-            "timestamp": timestamp
-        }
-    elif event_type == "pull_request":
-        author = data["pull_request"]["user"]["login"]
-        from_branch = data["pull_request"]["head"]["ref"]
-        to_branch = data["pull_request"]["base"]["ref"]
-        timestamp = datetime.strptime(data["pull_request"]["created_at"], "%Y-%m-%dT%H:%M:%SZ")
-        event_data = {
-            "type": "pull_request",
-            "author": author,
-            "from_branch": from_branch,
-            "to_branch": to_branch,
-            "timestamp": timestamp
-        }
-    else:
-        return jsonify({"message": "Event not supported"}), 400
+    # if event_type == "push":
+    author = data["pusher"]["name"]
+    to_branch = data["ref"].split("/")[-1]
+    timestamp = datetime.strptime(data["head_commit"]["timestamp"], "%Y-%m-%dT%H:%M:%SZ")
+    event_data = {
+        "type": "push",
+        "author": author,
+        "to_branch": to_branch,
+        "timestamp": timestamp
+    }
+    # elif event_type == "pull_request":
+    #     author = data["pull_request"]["user"]["login"]
+    #     from_branch = data["pull_request"]["head"]["ref"]
+    #     to_branch = data["pull_request"]["base"]["ref"]
+    #     timestamp = datetime.strptime(data["pull_request"]["created_at"], "%Y-%m-%dT%H:%M:%SZ")
+    #     event_data = {
+    #         "type": "pull_request",
+    #         "author": author,
+    #         "from_branch": from_branch,
+    #         "to_branch": to_branch,
+    #         "timestamp": timestamp
+    #     }
+    # else:
+    #     return jsonify({"message": "Event not supported"}), 400
 
     # collection.insert_one(event_data)
     return jsonify(event_data), 200
